@@ -1,3 +1,4 @@
+# Main Details (Note: Change registration to true to sign up for the first time, then change to false so nobody else can get in!)
 server_name: matrix.nodemixaholic.com
 enable_registration: false
 enable_registration_without_verification: false
