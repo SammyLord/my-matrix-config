@@ -1,6 +1,6 @@
 server_name: matrix.nodemixaholic.com
-enable_registration: true
-enable_registration_without_verification: true
+enable_registration: false
+enable_registration_without_verification: false
 report_stats: false
 
 # The database settings (SQLite by default; PostgreSQL is recommended for production)
