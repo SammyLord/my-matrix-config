@@ -1,2 +1,2 @@
 # my-matrix-config
-An Excellent Matrix
+An Excellent Homeserver
