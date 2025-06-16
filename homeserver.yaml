@@ -1,0 +1,45 @@
+server_name: matrix.nodemixaholic.com
+enable_registration: true
+enable_registration_without_verification: true
+report_stats: false
+
+# The database settings (SQLite by default; PostgreSQL is recommended for production)
+database:
+  name: "sqlite3"
+  args:
+    database: "/data/homeserver.db"
+
+listeners:
+  - port: 8008 # This will be your primary (HTTP) port
+    type: http
+    tls: false # Ensure this is explicitly false
+    bind_addresses: ['0.0.0.0'] # Or ['127.0.0.1'] if only accessible from localhost
+    x_forwarded: true # Important if using a reverse proxy/tunnel
+    resources:
+      - names: [client, federation] # Handle both client and federation on this HTTP port
+        compress: false
+
+turn_uris:
+  # Using the 'turns' (TURN over TLS) scheme is generally preferred for security
+  # and firewall traversal. Metered supports it on port 443.
+  - "turns:staticauth.openrelay.metered.ca:443?transport=tcp"
+  # You can also include the non-TLS 'turn' (plain UDP/TCP) if you wish,
+  # but 443 is often sufficient for firewall traversal.
+  - "turn:staticauth.openrelay.metered.ca:80?transport=tcp"
+  - "turn:staticauth.openrelay.metered.ca:80?transport=udp"
+  # It's still a good idea to include some public STUN servers.
+  - "stun:stun.l.google.com:19302"
+  - "stun:stun1.l.google.com:19302"
+
+# The shared secret used to compute passwords for the TURN server.
+# For Metered Open Relay Project's static auth, this is a specific string.
+# IMPORTANT: This secret is publicly known for their free tier.
+turn_shared_secret: "openrelayprojectsecret"
+
+# How long generated TURN credentials are valid for (in milliseconds).
+# 86400000 ms = 24 hours
+turn_user_lifetime: 86400000
+
+# Whether to allow guest users to use the TURN server.
+# Keep false unless you explicitly need guests to make calls.
+turn_allow_guests: false
